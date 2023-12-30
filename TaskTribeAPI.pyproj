@@ -1,0 +1,161 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Name>TaskTribeAPI</Name>
+    <RootNamespace>TaskTribeAPI</RootNamespace>
+    <InterpreterId>MSBuild|TaskTribeEnv|$(MSBuildProjectFullPath)</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>d58cdbc8-109d-488a-be7c-32da24ac2ee5</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>manage.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Django launcher</LaunchProvider>
+    <DjangoSettingsModule>TaskTribeAPI.settings</DjangoSettingsModule>
+    <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <OutputPath>.</OutputPath>
+    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Core\admin.py" />
+    <Compile Include="Core\apps.py" />
+    <Compile Include="Core\Auth\admin.py" />
+    <Compile Include="Core\Auth\apps.py" />
+    <Compile Include="Core\Auth\authentication.py" />
+    <Compile Include="Core\Auth\migrations\__init__.py" />
+    <Compile Include="Core\Auth\serializers.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Auth\tests.py" />
+    <Compile Include="Core\Auth\views.py" />
+    <Compile Include="Core\Auth\__init__.py" />
+    <Compile Include="Core\migrations\__init__.py" />
+    <Compile Include="Core\models.py" />
+    <Compile Include="Core\tests.py" />
+    <Compile Include="Core\User\admin.py" />
+    <Compile Include="Core\User\apps.py" />
+    <Compile Include="Core\User\migrations\__init__.py" />
+    <Compile Include="Core\User\models.py" />
+    <Compile Include="Core\User\serializers.py" />
+    <Compile Include="Core\User\tests.py" />
+    <Compile Include="Core\User\urls.py" />
+    <Compile Include="Core\User\views.py" />
+    <Compile Include="Core\User\__init__.py" />
+    <Compile Include="Core\views.py" />
+    <Compile Include="Core\__init__.py" />
+    <Compile Include="manage.py" />
+    <Compile Include="Project\admin.py" />
+    <Compile Include="Project\apps.py" />
+    <Compile Include="Project\migrations\__init__.py" />
+    <Compile Include="Project\models.py" />
+    <Compile Include="Project\tests.py" />
+    <Compile Include="Project\views.py" />
+    <Compile Include="Project\__init__.py" />
+    <Compile Include="TaskTribeAPI\__init__.py" />
+    <Compile Include="TaskTribeAPI\settings.py" />
+    <Compile Include="TaskTribeAPI\urls.py" />
+    <Compile Include="TaskTribeAPI\wsgi.py" />
+    <Compile Include="Task\admin.py" />
+    <Compile Include="Task\apps.py" />
+    <Compile Include="Task\migrations\__init__.py" />
+    <Compile Include="Task\models.py" />
+    <Compile Include="Task\serializers.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Task\tests.py" />
+    <Compile Include="Task\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Task\views.py" />
+    <Compile Include="Task\__init__.py" />
+    <Compile Include="Team\admin.py" />
+    <Compile Include="Team\apps.py" />
+    <Compile Include="Team\migrations\__init__.py" />
+    <Compile Include="Team\models.py" />
+    <Compile Include="Team\tests.py" />
+    <Compile Include="Team\views.py" />
+    <Compile Include="Team\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="Core\Auth\" />
+    <Folder Include="Core\Auth\migrations\" />
+    <Folder Include="Core\migrations\" />
+    <Folder Include="Core\User\" />
+    <Folder Include="Core\User\migrations\" />
+    <Folder Include="Project\" />
+    <Folder Include="Project\migrations\" />
+    <Folder Include="TaskTribeAPI\" />
+    <Folder Include="Task\" />
+    <Folder Include="Task\migrations\" />
+    <Folder Include="Team\" />
+    <Folder Include="Team\migrations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="TaskTribeEnv\">
+      <Id>TaskTribeEnv</Id>
+      <Version>3.11</Version>
+      <Description>TaskTribeEnv (Python 3.11 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
