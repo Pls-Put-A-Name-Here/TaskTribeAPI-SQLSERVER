@@ -34,12 +34,12 @@ class StatusSerializer(serializers.ModelSerializer):
 class PriorityCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Priority
-        fields = ['prtName', 'prtDescription']
+        fields = ['priorityName', 'priorityDescription']
 
 class PriorityUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Priority
-        fields = ['prtName', 'prtDescription']
+        fields = ['priorityName', 'priorityDescription']
 
 class PriorityDeleteSerializer(serializers.Serializer):
     prtIdpk = serializers.IntegerField()

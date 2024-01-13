@@ -43,11 +43,11 @@ class TeamDetails(models.Model):
 
 
 class TeamProject(models.Model):
-    tmPrjIdpk = models.AutoField(primary_key=True)
-    tmPrjTmIdfk = models.ForeignKey(Team, on_delete=models.CASCADE, null=True,db_column="tmPrjTmIdfk")
-    tmPrjPrjIdfk = models.ForeignKey('Project.Project', on_delete=models.CASCADE, null=True,db_column="tmPrjPrjIdfk")
-    tmPrjCreatedDate = models.DateField(null=True,db_column="tmPrjCreatedDate")
-    tmPrjUpdatedDate = models.DateTimeField(auto_now=True,db_column="tmPrjUpdatedDate")
+    teamProjectId = models.AutoField(primary_key=True)
+    teamProjectTeamId = models.ForeignKey(Team, on_delete=models.CASCADE, null=True,db_column="tmPrjTmIdfk")
+    teamProjectProjectId = models.ForeignKey('Project.Project', on_delete=models.CASCADE, null=True,db_column="tmPrjPrjIdfk")
+    teamProjectCreatedDate = models.DateField(null=True,db_column="tmPrjCreatedDate")
+    teamProjectLastUpdateDate = models.DateTimeField(db_column="tmPrjUpdatedDate")
 
     class Meta:
         managed = False

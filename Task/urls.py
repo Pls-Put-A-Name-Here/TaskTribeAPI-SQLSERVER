@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from Task.views import TaskAssignmentsAPIView,TaskViewSet,SubtaskViewSet,PriorityViewSet,StatusViewSet
+from Task.views import TaskAssignmentsAPIView,TaskViewSet,SubtaskViewSet,PriorityViewSet,StatusViewSet,AssignTaskView
 
 router = DefaultRouter()
 router.register(r'tasks', TaskViewSet)
@@ -17,4 +17,6 @@ router.register(r'statuses', StatusViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('task-assignments/', TaskAssignmentsAPIView.as_view(), name='task-assigment'),
+    path('task-assignments/<int:pk>/', TaskAssignmentsAPIView.as_view()),
+    path('task/assign',AssignTaskView.as_view(),name='task-assign')
 ]

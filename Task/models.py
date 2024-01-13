@@ -1,4 +1,5 @@
 from uuid import uuid1
+from django import db
 from django.db import models
 from rest_framework import serializers
 from rest_framework.fields import uuid
@@ -13,9 +14,9 @@ class TaskAssignment(models.Model):
     taskDescription = models.CharField(max_length=255)
     taskStartDate = models.DateField()
     taskDueDate = models.DateField()
-    taskCreatedDate = models.DateTimeField(auto_now_add=True)
+    taskCreatedDate = models.DateField(auto_now_add=True)
     # taskUpdatedDate = models.DateTimeField()
-    taskAssignedDate = models.DateTimeField()
+    taskAssignedDate = models.DateField()
     taskPriority = models.CharField(max_length=255)
     taskStatus = models.CharField(max_length=255)
     taskAssignerUserId = models.IntegerField()
@@ -24,13 +25,21 @@ class TaskAssignment(models.Model):
     taskAssignerName = models.CharField(max_length=255)
 
     class Meta:
-        managed = False  
+        managed = False 
+        
+class AssignTask(models.Model):
+    taskId = models.IntegerField()
+    assigneeUserId = models.IntegerField()
+    assignerUserId = models.IntegerField()
+    
+    class Meta:
+        managed = False
         
 class Priority(models.Model):
-    prtIdpk = models.AutoField(primary_key=True)
-    prtName = models.CharField(max_length=20, null=True)
-    prtDescription = models.CharField(max_length=50, null=True)
-    prtCreatedDate = models.DateField(auto_now_add=True)
+    priorityId = models.AutoField(primary_key=True,db_column="prtIdpk")
+    priorityName = models.CharField(max_length=20, null=True,db_column="prtName")
+    priorityDescription = models.CharField(max_length=50, null=True,db_column="prtDescription")
+    priorityCreatedDate = models.DateField(auto_now_add=True,db_column="prtCreatedDate")
     # prtUpdateDate = models.DateField(null=True)
 
     class Meta:
@@ -38,10 +47,10 @@ class Priority(models.Model):
         db_table = 'tblTaskPriorities'
 
 class Status(models.Model):
-    staIdpk = models.AutoField(primary_key=True)
-    staName = models.CharField(max_length=20, null=True)
-    staDescription = models.CharField(max_length=50, null=True)
-    staCreatedDate = models.DateField(auto_now_add=True)
+    statusId = models.AutoField(primary_key=True,db_column="staIdpk")
+    statusName = models.CharField(max_length=20, null=True,db_column="staName")
+    statusDescription = models.CharField(max_length=50, null=True,db_column="staDescription")
+    statusCreatedDate = models.DateField(auto_now_add=True,db_column="staCreatedDate")
     # staUpdateDate = models.DateTimeField(auto_now=True)
 
     class Meta:

@@ -143,3 +143,8 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API to support task tribe backend',
     'VERSION': '1.0.0',
 }
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+     "http://localhost:3000",
+     
+]
