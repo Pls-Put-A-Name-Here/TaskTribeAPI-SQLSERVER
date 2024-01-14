@@ -23,12 +23,17 @@ from django.urls import include, path
 
 from Core.User import urls as userUrls
 from Task import urls as taskUrls
+from Team import urls as teamUrls
+from Project import urls as projectUrls
 
 urlpatterns = [
     # Uncomment the next line to enable the admin:
     path('admin/', admin.site.urls),
-    path('api/schema/',SpectacularAPIView.as_view(),name='api-schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='api-schema'),name='api-docs'),
+    path('api/v1/schema/',SpectacularAPIView.as_view(),name='api-schema'),
+    path('api/v1/docs/', SpectacularSwaggerView.as_view(url_name='api-schema'),name='api-docs'),
     path('api/v1/',include(userUrls)),
-    path('api/v1/',include(taskUrls))
+    path('api/v1/',include(taskUrls)),
+    path('api/v1/',include(teamUrls)),
+    path('api/v1/',include(projectUrls)),
+    path('api-auth/', include('rest_framework.urls'))
 ]

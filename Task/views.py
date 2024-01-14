@@ -35,7 +35,7 @@ class AssignTaskView(APIView):
 
 class TaskAssignmentsAPIView(APIView):
     @extend_schema(responses=TaskAssignmentSerializer(many=True))
-    def get(self, request,pk):
+    def get(self, request,pk=None):
         # if request.data.get('taskAssignerUserId'):
         #     task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignmentsByAssignerUserId @AssignerUserID=%s",
         #                                                   [request.data.get('taskAssignerUserId')])

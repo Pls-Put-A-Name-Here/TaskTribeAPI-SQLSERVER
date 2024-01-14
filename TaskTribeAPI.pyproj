@@ -58,7 +58,13 @@
     <Compile Include="Project\admin.py" />
     <Compile Include="Project\apps.py" />
     <Compile Include="Project\models.py" />
+    <Compile Include="Project\serializers.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Project\tests.py" />
+    <Compile Include="Project\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Project\views.py" />
     <Compile Include="Project\__init__.py" />
     <Compile Include="TaskTribeAPI\__init__.py" />
@@ -67,6 +73,9 @@
     <Compile Include="TaskTribeAPI\wsgi.py" />
     <Compile Include="Task\admin.py" />
     <Compile Include="Task\apps.py" />
+    <Compile Include="Task\dto.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Task\models.py" />
     <Compile Include="Task\serializers.py">
       <SubType>Code</SubType>
@@ -80,7 +89,13 @@
     <Compile Include="Team\admin.py" />
     <Compile Include="Team\apps.py" />
     <Compile Include="Team\models.py" />
+    <Compile Include="Team\serializers.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Team\tests.py" />
+    <Compile Include="Team\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Team\views.py" />
     <Compile Include="Team\__init__.py" />
   </ItemGroup>

@@ -9,17 +9,16 @@ class Project(models.Model):
     prjProjectManagerUsrIdfk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,db_column="prjProjectManagerUsrIdfk")
     prjStartDate = models.DateField(null=True)
     prjEndDate = models.DateField(null=True)
-    prjCreatedDate = models.DateField(null=True)
-    prjUpdatedDate = models.DateTimeField(auto_now=True)
+    prjCreatedDate = models.DateField(null=False,auto_now_add=True)
+    # prjUpdatedDate = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
         db_table = 'tblProjects'
 
-        
 
 class ProjectDetails(models.Model):
-    ProjectID = models.IntegerField()
+    ProjectID = models.AutoField(primary_key=True)
     ProjectName = models.CharField(max_length=255)
     ProjectTeamName = models.CharField(max_length=255)
     ProjectManager = models.CharField(max_length=255)
@@ -29,11 +28,12 @@ class ProjectDetails(models.Model):
     ProjectEndDate = models.DateField()
 
     class Meta:
-        managed = False 
-
-def execute_stored_procedure():
-    results = ProjectDetails.objects.raw("EXEC GetProjectDetails")
-    return results
+        managed = True
+        
+    
+    # def execute_stored_procedure(self):
+    #     results = ProjectDetails.objects.raw("EXEC GetProjectDetails")
+    #     return results
 
 class ProjectTeam(models.Model):
     prjTmIdpk = models.AutoField(primary_key=True, db_column="prjtIdpk")
@@ -49,8 +49,8 @@ class ProjectDetail(models.Model):
     prjdPrjIdpk = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
     prjdProjectBudget = models.DecimalField(max_digits=18, decimal_places=2, null=True)
     prjdProjectNotes = models.TextField(null=True)
-    prjdCreatedDate = models.DateField(null=True)
-    prjdUpdatedDate = models.DateTimeField(auto_now=True)
+    prjdCreatedDate = models.DateField(null=False,auto_now_add=True)
+    # prjdUpdatedDate = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
