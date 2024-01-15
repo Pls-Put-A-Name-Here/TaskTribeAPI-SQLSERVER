@@ -1,50 +1,59 @@
-# from django.db import models
+from django.db import models
+from django.conf import settings
 
-# class ProjectDetails(models.Model):
-#     ProjectID = models.IntegerField()
-#     ProjectName = models.CharField(max_length=255)
-#     TeamName = models.CharField(max_length=255)
-#     ProjectManager = models.CharField(max_length=255)
-#     ProjectBudget = models.FloatField()
-#     ProjectNotes = models.TextField()
-#     ProjectStartDate = models.DateField()
-#     ProjectEndDate = models.DateField()
 
-#     class Meta:
-#         managed = False 
+class Project(models.Model):
+    prjIdpk = models.AutoField(primary_key=True)
+    prjName = models.CharField(max_length=100, null=True)
+    prjTmIdfk = models.ForeignKey("Team.Team", on_delete=models.SET_NULL, null=True,db_column="prjTmIdfk")
+    prjProjectManagerUsrIdfk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,db_column="prjProjectManagerUsrIdfk")
+    prjStartDate = models.DateField(null=True)
+    prjEndDate = models.DateField(null=True)
+    prjCreatedDate = models.DateField(null=True)
+    prjUpdatedDate = models.DateTimeField(auto_now=True)
 
-# def execute_stored_procedure():
-#     results = ProjectDetails.objects.raw("EXEC GetProjectDetails")
-#     return results
+    class Meta:
+        managed = False
+        db_table = 'tblProjects'
 
-# class ProjectTeam(models.Model):
-#     prjTeamIdpk = models.AutoField(primary_key=True)
-#     prjTeamPrjIdfk = models.ForeignKey('Project', on_delete=models.CASCADE, null=True)
-#     prjTeamTmIdfk = models.ForeignKey('Team', on_delete=models.CASCADE, null=True)
+        
 
-#     class Meta:
-#         db_table = 'ProjectTeams'
+class ProjectDetails(models.Model):
+    ProjectID = models.IntegerField()
+    ProjectName = models.CharField(max_length=255)
+    ProjectTeamName = models.CharField(max_length=255)
+    ProjectManager = models.CharField(max_length=255)
+    ProjectBudget = models.FloatField()
+    ProjectNotes = models.TextField()
+    ProjectStartDate = models.DateField()
+    ProjectEndDate = models.DateField()
 
-# class ProjectDetail(models.Model):
-#     prjdIdpk = models.AutoField(primary_key=True)
-#     prjdPrjIdpk = models.ForeignKey('Project', on_delete=models.CASCADE, null=True)
-#     prjdProjectBudget = models.DecimalField(max_digits=18, decimal_places=2, null=True)
-#     prjdProjectNotes = models.TextField(null=True)
-#     prjdCreatedDate = models.DateField(null=True)
-#     prjdUpdatedDate = models.DateTimeField(auto_now=True)
+    class Meta:
+        managed = False 
 
-#     class Meta:
-#         db_table = 'tblProjectDetails'
+def execute_stored_procedure():
+    results = ProjectDetails.objects.raw("EXEC GetProjectDetails")
+    return results
 
-# class Project(models.Model):
-#     prjIdpk = models.AutoField(primary_key=True)
-#     prjName = models.CharField(max_length=100, null=True)
-#     prjTmIdfk = models.ForeignKey('Team', on_delete=models.SET_NULL, null=True)
-#     prjProjectManagerUsrIdfk = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
-#     prjStartDate = models.DateField(null=True)
-#     prjEndDate = models.DateField(null=True)
-#     prjCreatedDate = models.DateField(null=True)
-#     prjUpdatedDate = models.DateTimeField(auto_now=True)
+class ProjectTeam(models.Model):
+    prjTmIdpk = models.AutoField(primary_key=True, db_column="prjtIdpk")
+    prjTmPrjIdfk = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, db_column="prjtPrjIdfk")
+    prjTmTmIdfk = models.ForeignKey("Team.Team", on_delete=models.CASCADE, null=True, db_column="prjtTmIdfk")
 
-#     class Meta:
-#         db_table = 'tblProjects'
+    class Meta:
+        managed = False
+        db_table = 'tblProjectTeams'
+
+class ProjectDetail(models.Model):
+    prjdIdpk = models.AutoField(primary_key=True)
+    prjdPrjIdpk = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+    prjdProjectBudget = models.DecimalField(max_digits=18, decimal_places=2, null=True)
+    prjdProjectNotes = models.TextField(null=True)
+    prjdCreatedDate = models.DateField(null=True)
+    prjdUpdatedDate = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tblProjectDetails'
+
+

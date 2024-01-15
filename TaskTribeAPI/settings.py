@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'Team',
     'Task',
+    'Project',
     'Core.User',
     'Core.Auth',
     'Core'

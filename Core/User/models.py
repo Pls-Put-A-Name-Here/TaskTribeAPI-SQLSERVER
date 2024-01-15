@@ -37,8 +37,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     otherName = models.CharField(max_length=255,db_column='usrOtherName')
     lastName = models.CharField(max_length=255,db_column='usrLastName')
     dateOfBirth = models.DateField(default='1999-10-01',db_column='usrDoB')
-    genderId = models.IntegerField(default=0,db_column='usrGndIdfk')
-    titleId = models.IntegerField(default=0,db_column='usrTltIdfk')
+    genderId = models.ForeignKey('User.Gender',db_column='usrGndIdfk',on_delete=models.CASCADE,default='',null=True)
+    titleId = models.ForeignKey('User.Title',db_column='usrTltIdfk',on_delete=models.CASCADE,default='',null=True)
     isActive = models.BooleanField(default=True,db_column='usrActive')
     createdDate = models.DateTimeField(auto_now_add=True,db_column='usrCreatedDate')
     lastEditDate = models.DateTimeField(auto_now=True,db_column='usrUpdateDate')
@@ -48,27 +48,30 @@ class User(AbstractBaseUser,PermissionsMixin):
     USERNAME_FIELD = 'email'
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'tblUsers'
 
 
+
 class Gender(models.Model):
-    genderId = models.AutoField(primary_key=True)
-    genderName = models.CharField(max_length=20, null=True)
-    genderDescription = models.CharField(max_length=50, null=True)
-    genderCreatedDate = models.DateField(null=True)
-    genderUpdatedDate = models.DateTimeField(auto_now=True)
+    genderId = models.AutoField(db_column='gndIdpk', primary_key=True)  # Field name made lowercase.
+    genderName = models.CharField(db_column='gndName', unique=True, max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    genderDescription = models.CharField(db_column='gndDescription', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    genderCreatedDate= models.DateField(db_column='gndCreatedDate', blank=True, null=True)  # Field name made lowercase.
+    genderUpdatedDate = models.TextField(db_column='gndUpdatedDate')  # Field name made lowercase. This field type is a guess.
 
     class Meta:
+        managed = False
         db_table = 'tblGenders'
         
 class Title(models.Model):
-    titleId = models.AutoField(primary_key=True)
-    titleName = models.CharField(max_length=50, null=True)
-    titleShortName = models.CharField(max_length=5, null=True)
-    titleDescription = models.CharField(max_length=25, null=True)
-    titleCreatedDate = models.DateField(null=True)
-    titleUpdatedDate = models.DateTimeField(auto_now=True)
+    titleId = models.AutoField(db_column='tltIdpk', primary_key=True)  # Field name made lowercase.
+    titleName = models.CharField(db_column='tltName', unique=True, max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    titleShortName = models.CharField(db_column='tltShtName', max_length=5, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    titleDescription = models.CharField(db_column='tltDescription', max_length=25, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    titleCreatedDate = models.DateField(db_column='tltCreatedDate', blank=True, null=True)  # Field name made lowercase.
+    titleUpdatedDate = models.TextField(db_column='tltUpdatedDate')  # Field name made lowercase. This field type is a guess.
 
     class Meta:
+        managed = False
         db_table = 'tblTitles'
