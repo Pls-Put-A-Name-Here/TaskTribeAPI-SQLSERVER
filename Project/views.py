@@ -8,9 +8,11 @@ from rest_framework.response import Response
 
 class ProjectDetailsAPIView(APIView):
     @extend_schema(responses=ProjectDetailsSerializer(many=True))
-    def get(self, request):
+    def get(self, request,pk=None):
         # Use a database connection cursor to execute the stored procedure
         with connection.cursor() as cursor:
+            if pk is not None:
+                cursor.execute("EXEC GetProjectDetailsById @ProjectID=%s", [pk])
             cursor.execute("EXEC GetProjectDetails")
 
             # Fetch the results from the cursor

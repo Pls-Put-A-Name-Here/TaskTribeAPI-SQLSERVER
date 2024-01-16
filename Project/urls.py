@@ -12,5 +12,6 @@ router.register(r'project-teams', ProjectTeamViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('project-details/', ProjectDetailsAPIView.as_view()),
+    path('project-details/<int:pk>/', ProjectDetailsAPIView.as_view()),
    
 ]
