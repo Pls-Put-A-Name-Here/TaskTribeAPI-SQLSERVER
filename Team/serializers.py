@@ -24,5 +24,6 @@ class TeamProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamProject
         fields = '__all__'
+        read_only_fields = ['teamProjectId', 'teamProjectCreatedDate']
         # depth = 1  # This is used to serialize ForeignKey relationships (e.g., TeamProjectTeamId, TeamProjectProjectId)
 

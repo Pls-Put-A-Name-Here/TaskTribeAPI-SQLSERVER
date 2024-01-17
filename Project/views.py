@@ -13,7 +13,8 @@ class ProjectDetailsAPIView(APIView):
         with connection.cursor() as cursor:
             if pk is not None:
                 cursor.execute("EXEC GetProjectDetailsById @ProjectID=%s", [pk])
-            cursor.execute("EXEC GetProjectDetails")
+            else:
+                cursor.execute("EXEC GetProjectDetails")
 
             # Fetch the results from the cursor
             results = cursor.fetchall()
@@ -33,11 +34,14 @@ class ProjectDetailsAPIView(APIView):
             }
             results_list.append(result_dict)
 
-        # Serialize the results using the custom serializer
-        serializer = ProjectDetailsSerializer(results_list, many=True)
+        if results_list == []:
+            return Response({"detail":"not found"})
+        else:
+            # Serialize the results using the custom serializer
+            serializer = ProjectDetailsSerializer(results_list, many=True)
 
-        # Return the serialized data in the response
-        return Response(serializer.data)
+            # Return the serialized data in the response
+            return Response(serializer.data)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

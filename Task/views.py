@@ -7,12 +7,65 @@ from rest_framework import viewsets, authentication, permissions
 # Create your views here.
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import TaskAssignment, Task, SubTask, Priority, Status
-from .serializers import TaskAssignmentSerializer, TaskSerializer, SubTaskSerializer, PrioritySerializer, StatusSerializer, PriorityUpdateSerializer,PriorityCreateSerializer
+from .models import TaskAssignment, Task, SubTask, Priority, Status,TaskUpdate
+from .serializers import TaskAssignmentSerializer, TaskSerializer, SubTaskSerializer, PrioritySerializer, StatusSerializer, PriorityUpdateSerializer,PriorityCreateSerializer,TaskUpdateSerializer
 
 from rest_framework import status
 # from .dto import AssignTaskDTO
 
+class TaskUpdateView(APIView):
+    @extend_schema(responses=TaskUpdateSerializer(many=True))
+    def get(self,request,pk=None):
+        
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "EXEC [dbo].[GetTaskUpdatesById] @taskAssignmentID=%s",
+                    [pk]
+                )
+                results = cursor.fetchall()
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        results_list = []
+        for result in results:
+            result_dict = {
+                'taskUpdateId': result[0], 
+                'taskUpdateTaskId': result[1], 
+                'taskUpdateTaskAssignmentId': result[2],
+                'taskUpdateUserId': result[3],  
+                'taskUpdateUserName': result[4],  
+                'taskUpdateTitle': result[5],  
+                'taskUpdateDetails': result[6], 
+                'taskUpdateChallenges': result[7], 
+                'taskUpdateProgress': result[8],  
+                'taskUpdateDate': result[9], 
+            }
+            results_list.append(result_dict)
+        if results_list == []:
+            return Response([{"detail":"not found"}])
+        else:
+            # Serialize the results using the custom serializer
+            serializer = TaskUpdateSerializer(results_list, many=True)
+            return Response(serializer.data)
+        
+    def post(self, request):
+        user_id = request.data.get('taskUpdateUserId')
+        task_assignment_id = request.data.get('taskUpdateTaskAssignmentId')
+        update_details = request.data.get('taskUpdateDetails')
+        update_title = request.data.get('taskUpdateTitle')
+        update_challenges = request.data.get('taskUpdateChallenges')
+        update_progress = request.data.get('taskUpdateProgress')
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "EXEC [dbo].[MakeTaskUpdate]  @taskUpdatUserID=%s, @taskUpdateTaskAssignmentID=%s, @taskUpdateDetails=%s,@taskUpdateTitle=%s,@taskUpdateChallenges=%s, @taskUpdateProgress=%s",
+                    [ user_id, task_assignment_id, update_details,update_title,update_challenges, update_progress]
+                )
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({'success': True}, status=status.HTTP_201_CREATED)
 
 class AssignTaskView(APIView):
     # @extend_schema(request=AssignTaskDTO)
@@ -58,6 +111,12 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         return TaskSerializer
+    
+class TaskUpdateViewSet(viewsets.ModelViewSet):
+    queryset = TaskUpdate.objects.all()
+    
+    def get_serializer_class(self):
+        return TaskUpdateSerializer
 
 class SubtaskViewSet(viewsets.ModelViewSet):
     queryset = SubTask.objects.all()

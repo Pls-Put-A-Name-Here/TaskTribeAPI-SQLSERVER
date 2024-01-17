@@ -15,6 +15,7 @@ class TaskAssignment(models.Model):
     taskStartDate = models.DateField()
     taskDueDate = models.DateField()
     taskCreatedDate = models.DateField(auto_now_add=True)
+    taskProgress = models.DecimalField(max_digits=6, decimal_places=3)
     # taskUpdatedDate = models.DateTimeField()
     taskAssignedDate = models.DateField()
     taskPriority = models.CharField(max_length=255)
@@ -86,20 +87,36 @@ class TaskStatusHistory(models.Model):
         managed = False        
         db_table = 'tblTaskStatusHistory'
 
-class TaskUpdate(models.Model):
-    tudIdpk = models.AutoField(primary_key=True)
-    tudTskIdfk = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
-    tudUsrfk = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    tkuTitle = models.CharField(max_length=50, null=True)
-    tudDetails = models.TextField(null=True)
-    tkuChallenges = models.CharField(max_length=150, null=True)
-    tudProgress = models.DecimalField(max_digits=6, decimal_places=3, null=True)
-    tudCreatedDate = models.DateField(null=True)
-    tudUpdatedDate = models.DateTimeField(auto_now=True)
+# class TaskUpdate(models.Model):
+#     taskUpdateId = models.AutoField(primary_key=True, db_column="tudIdpk")
+#     taskUpdateTaskId = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, db_column="tudTskIdfk")
+#     taskUpdateTaskAssignmentId = models.ForeignKey(TaskAssignment, on_delete=models.SET_NULL, null=True, db_column="tudTkaIdfk")
+#     taskUpdateUserId = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, db_column="tudUsrfk")
+#     taskUpdateTitle = models.CharField(max_length=50, null=True, db_column="tudTitle")
+#     taskUpdateDetails = models.TextField(null=True, db_column="tudDetails")
+#     taskUpdateChallenges = models.CharField(max_length=150, null=True, db_column="tudChallenges")
+#     taskUpdateProgress = models.DecimalField(max_digits=6, decimal_places=3, null=True, db_column="tudProgress")
+#     taskUpdateCreatedDate = models.DateField(null=False, db_column="tudCreatedDate",auto_now_add=True)
+#     # taskUpdateLastUpdateDate = models.DateTimeField(auto_now=True, db_column="tudUpdatedDate")
 
+#     class Meta:
+#         managed = False
+#         db_table = 'tblTaskUpdates'
+
+class TaskUpdate(models.Model):
+    taskUpdateId = models.AutoField(primary_key=True)
+    taskUpdateTaskId = models.IntegerField()
+    taskUpdateTaskAssignmentId = models.IntegerField()
+    taskUpdateUserId = models.IntegerField()
+    taskUpdateUserName = models.CharField(max_length=255)
+    taskUpdateTitle = models.CharField(max_length=50, null=True)
+    taskUpdateDetails = models.TextField(null=True)
+    taskUpdateChallenges = models.CharField(max_length=150, null=True)
+    taskUpdateProgress = models.DecimalField(max_digits=6, decimal_places=3, null=True)
+    taskUpdateDate = models.DateField(null=True)
+    
     class Meta:
         managed = False
-        db_table = 'tblTaskUpdates'
 
 class SubTask(models.Model):
     stkIdpk = models.AutoField(primary_key=True)

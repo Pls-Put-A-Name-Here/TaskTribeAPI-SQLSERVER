@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Task.models import TaskAssignment, Task, SubTask, Priority, Status
+from Task.models import TaskAssignment, Task, SubTask, Priority, Status,TaskUpdate
 
 class TaskAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,3 +44,24 @@ class PriorityUpdateSerializer(serializers.ModelSerializer):
 class PriorityDeleteSerializer(serializers.Serializer):
     prtIdpk = serializers.IntegerField()
     
+# class TaskUpdateSerializer(serializers.Serializer):
+#    class Meta:
+#        model = TaskUpdate
+#        fields = "__all__"
+#        # read_only_fields = ['taskUpdateId','taskUpdateCreatedDate']
+
+class TaskUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskUpdate
+        fields = [
+            'taskUpdateId',
+            'taskUpdateTaskId',
+            'taskUpdateTaskAssignmentId',
+            'taskUpdateUserId',
+            'taskUpdateUserName',
+            'taskUpdateTitle',
+            'taskUpdateDetails',
+            'taskUpdateChallenges',
+            'taskUpdateProgress',
+            'taskUpdateDate',
+        ]

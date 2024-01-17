@@ -3,14 +3,13 @@ from django.conf import settings
 
 
 class Project(models.Model):
-    prjIdpk = models.AutoField(primary_key=True)
-    prjName = models.CharField(max_length=100, null=True)
-    prjTmIdfk = models.ForeignKey("Team.Team", on_delete=models.SET_NULL, null=True,db_column="prjTmIdfk")
-    prjProjectManagerUsrIdfk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,db_column="prjProjectManagerUsrIdfk")
-    prjStartDate = models.DateField(null=True)
-    prjEndDate = models.DateField(null=True)
-    prjCreatedDate = models.DateField(null=False,auto_now_add=True)
-    # prjUpdatedDate = models.DateTimeField(auto_now=True)
+    projectId = models.AutoField(primary_key=True, db_column="prjIdpk")
+    projectName = models.CharField(max_length=100, null=True, db_column="prjName")
+    projectTeamId = models.ForeignKey("Team.Team", on_delete=models.SET_NULL, null=True, db_column="prjTmIdfk")
+    projectProjectManagerId = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, db_column="prjProjectManagerUsrIdfk")
+    projectStartDate = models.DateField(null=True, db_column="prjStartDate")
+    projectEndDate = models.DateField(null=True, db_column="prjEndDate")
+    projectCreatedDate = models.DateField(null=False, auto_now_add=True, db_column="prjCreatedDate")
 
     class Meta:
         managed = False
