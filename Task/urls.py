@@ -18,7 +18,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('task-assignments/', TaskAssignmentsAPIView.as_view(), name='task-assigment'),
     path('task-assignments/<int:pk>/', TaskAssignmentsAPIView.as_view()),
-    path('task-assignments/',AssignTaskView.as_view(),name='task-assign'),
+    # path('task-assignments/',AssignTaskView.as_view(),name='task-assign'),
     path('task-updates/', TaskUpdateView.as_view(), name='task-update'),
     path('task-updates/<int:pk>/', TaskUpdateView.as_view(), name='task-update'),
 ]

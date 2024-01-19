@@ -4,14 +4,13 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, authentication, permissions
-# Create your views here.
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import TaskAssignment, Task, SubTask, Priority, Status,TaskUpdate
-from .serializers import TaskAssignmentSerializer, TaskSerializer, SubTaskSerializer, PrioritySerializer, StatusSerializer, PriorityUpdateSerializer,PriorityCreateSerializer,TaskUpdateSerializer
+from .serializers import AssignTaskSerializer, TaskAssignmentSerializer, TaskSerializer, SubTaskSerializer, PrioritySerializer, StatusSerializer, PriorityUpdateSerializer,PriorityCreateSerializer,TaskUpdateSerializer
 
 from rest_framework import status
-# from .dto import AssignTaskDTO
+from .dto import AssignTaskDTO
 
 class TaskUpdateView(APIView):
     @extend_schema(responses=TaskUpdateSerializer(many=True))
@@ -42,7 +41,7 @@ class TaskUpdateView(APIView):
             }
             results_list.append(result_dict)
         if results_list == []:
-            return Response([{"detail":"not found"}])
+            return Response([])
         else:
             # Serialize the results using the custom serializer
             serializer = TaskUpdateSerializer(results_list, many=True)
@@ -59,16 +58,17 @@ class TaskUpdateView(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "EXEC [dbo].[MakeTaskUpdate]  @taskUpdatUserID=%s, @taskUpdateTaskAssignmentID=%s, @taskUpdateDetails=%s,@taskUpdateTitle=%s,@taskUpdateChallenges=%s, @taskUpdateProgress=%s",
+                    "EXEC [dbo].[MakeTaskUpdate]  @taskUpdateUserID=%s, @taskUpdateTaskAssignmentID=%s, @taskUpdateDetails=%s,@taskUpdateTitle=%s,@taskUpdateChallenges=%s, @taskUpdateProgress=%s",
                     [ user_id, task_assignment_id, update_details,update_title,update_challenges, update_progress]
                 )
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({'success': True}, status=status.HTTP_201_CREATED)
+    
 
 class AssignTaskView(APIView):
-    # @extend_schema(request=AssignTaskDTO)
+    @extend_schema(request=AssignTaskSerializer)
     def post(self, request):
         try:
             # Extract parameters from the request or any other source
@@ -86,23 +86,80 @@ class AssignTaskView(APIView):
             return JsonResponse({"error": str(e)}, status=400)
 
 
+# class TaskAssignmentsAPIView(APIView):
+#     @extend_schema(responses=TaskAssignmentSerializer(many=True))
+#     def get(self, request,pk=None):
+#         # if request.data.get('taskAssignerUserId'):
+#         #     task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignmentsByAssignerUserId @AssignerUserID=%s",
+#         #                                                   [request.data.get('taskAssignerUserId')])
+#         if pk:
+#             # task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignmentsByTaskId @TaskId=%s",[pk])
+#             task_assignment_data = TaskAssignment.objects.raw("EXEC GetTaskAssignments")
+#             task_assignments = task_assignment_data.filter("taskkId" == pk)
+#         else:
+#             task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignments")
+            
+#         if not task_assignments:
+#             return Response({"detail":"not found"})
+#         else: 
+#             serializer = TaskAssignmentSerializer(task_assignments, many=True)
+#             return Response(serializer.data)
+        
+#     @extend_schema(request=AssignTaskSerializer)
+#     def post(self, request):
+#         try:
+#             # Extract parameters from the request or any other source
+#             task_id = request.data.get('taskId')
+#             assignee_user_id = request.data.get('assigneeUserId')
+#             assigner_user_id = request.data.get('assignerUserId')
+
+#             # Call the stored procedure using a raw SQL query
+#             with connection.cursor() as cursor:
+#                 cursor.execute("EXEC [dbo].[AssignTask] @TaskID=%s, @AssigneeUserID=%s, @AssignerUserID=%s",
+#                                [task_id, assignee_user_id, assigner_user_id])
+
+#             return JsonResponse({"message": "Task assigned successfully","Task Assignment":{"taskId":task_id,"AssigneeId":assignee_user_id,"AssignerId":assigner_user_id}})
+#         except Exception as e:
+#             return JsonResponse({"error": str(e)}, status=400)
+
 class TaskAssignmentsAPIView(APIView):
     @extend_schema(responses=TaskAssignmentSerializer(many=True))
-    def get(self, request,pk=None):
-        # if request.data.get('taskAssignerUserId'):
-        #     task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignmentsByAssignerUserId @AssignerUserID=%s",
-        #                                                   [request.data.get('taskAssignerUserId')])
-        if pk:
-            task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignmentById @TaskAssignmentId=%s",[pk])
-        else:
-            task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignments")
+    def get(self, request, pk=None):
+        try:
+            if pk:
+                task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignmentsByTaskId @TaskId=%s", [pk])
+            else:
+                task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignments")
             
-        if not task_assignments:
-            return Response({"detail":"not found"})
-        else: 
+            if not task_assignments:
+                return Response({"detail": "not found"})
+            
             serializer = TaskAssignmentSerializer(task_assignments, many=True)
             return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
 
+    @extend_schema(request=AssignTaskSerializer)
+    def post(self, request):
+        try:
+            task_id = request.data.get('taskId')
+            assignee_user_id = request.data.get('assigneeUserId')
+            assigner_user_id = request.data.get('assignerUserId')
+
+            with connection.cursor() as cursor:
+                cursor.execute("EXEC [dbo].[AssignTask] @TaskID=%s, @AssigneeUserID=%s, @AssignerUserID=%s",
+                               [task_id, assignee_user_id, assigner_user_id])
+
+            response_data = {
+                "message": "Task assigned successfully",
+                "TaskAssignment": {"taskId": task_id, "AssigneeId": assignee_user_id, "AssignerId": assigner_user_id}
+            }
+
+            return JsonResponse(response_data,status=201)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+        
+        
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
 

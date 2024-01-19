@@ -27,6 +27,7 @@ class TaskAssignment(models.Model):
 
     class Meta:
         managed = False 
+        db_table = 'tblTaskAssignments'
         
 class AssignTask(models.Model):
     taskId = models.IntegerField()
@@ -59,17 +60,17 @@ class Status(models.Model):
         db_table = 'tblTaskStatuses'
 
 class Task(models.Model):
-    task = models.AutoField(primary_key=True, db_column='tskIdpk')
+    taskId = models.AutoField(primary_key=True, db_column='tskIdpk')
     taskName = models.CharField(max_length=100, null=True, db_column='tskName')
     taskAssigneeUserId = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, db_column='tskAssigneeUsrIdfk')
-    taskCreatedByUserIdfk = models.ForeignKey(User, null=True, related_name="created_tasks", on_delete=models.SET_NULL, db_column='tskCreatedByUserIdfk')
+    taskCreatedByUserId = models.ForeignKey(User, null=True, related_name="created_tasks", on_delete=models.SET_NULL, db_column='tskCreatedByUserIdfk')
     taskTeamId = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL, db_column='tskTmIdfk')
     taskProjectId = models.ForeignKey(Project, null=True, on_delete=models.SET_NULL, db_column='tskPrjIdfk')
     taskDescription = models.CharField(max_length=100, null=True, db_column='tskDescription')
     taskStartDate = models.DateField(null=True, db_column='tskStartDate')
     taskDueDate = models.DateField(null=True, db_column='tskDueDate')
     taskPriorityId = models.ForeignKey(Priority, null=True, on_delete=models.SET_NULL, db_column='tskPrtIdfk')
-    taskSubtaskId = models.ForeignKey(Status, null=True, on_delete=models.SET_NULL, db_column='tskStaIdfk')
+    taskStatusId = models.ForeignKey(Status, null=True, on_delete=models.SET_NULL, db_column='tskStaIdfk')
     taskCreatedDate = models.DateField(auto_now_add=True, db_column='tskCreatedDate')
     # taskUpdatedDate = models.DateTimeField(auto_now=True, db_column='tskUpdatedDate')
 

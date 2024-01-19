@@ -35,13 +35,28 @@ class ProjectDetails(models.Model):
     #     return results
 
 class ProjectTeam(models.Model):
-    prjTmIdpk = models.AutoField(primary_key=True, db_column="prjtIdpk")
-    prjTmPrjIdfk = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, db_column="prjtPrjIdfk")
-    prjTmTmIdfk = models.ForeignKey("Team.Team", on_delete=models.CASCADE, null=True, db_column="prjtTmIdfk")
+    projectTeamId = models.AutoField(primary_key=True, db_column="prjTmIdpk")
+    projectTeamProjectId = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, db_column="prjTmPrjIdfk")
+    projectTeamTeamId = models.ForeignKey("Team.Team", on_delete=models.CASCADE, null=True, db_column="prjTmTmIdfk")
 
     class Meta:
         managed = False
         db_table = 'tblProjectTeams'
+
+
+class ProjectTeamRead(models.Model):
+    projectTeamId = models.IntegerField(primary_key=True)
+    teamId = models.IntegerField()
+    teamName = models.CharField(max_length=100)
+    teamDescription = models.CharField(max_length=100, null=True, blank=True)
+    teamCreatedDate = models.DateField()
+    teamUpdatedDate = models.BinaryField()
+    teamIsActive = models.BooleanField()
+    teamLeadName = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False  # To indicate that this model is not managed by Django
+
 
 class ProjectDetail(models.Model):
     prjdIdpk = models.AutoField(primary_key=True)

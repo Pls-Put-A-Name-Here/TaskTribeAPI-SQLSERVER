@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project,ProjectDetails, ProjectTeam, ProjectDetail
+from .models import Project,ProjectDetails, ProjectTeam, ProjectDetail, ProjectTeamRead
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,6 +27,11 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
         model = ProjectTeam
         fields = '__all__'
 
+class ProjectTeamReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectTeamRead
+        fields = '__all__'
+        
 class ProjectDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectDetail

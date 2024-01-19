@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework.response import Serializer 
 from Task.models import TaskAssignment, Task, SubTask, Priority, Status,TaskUpdate
 
 class TaskAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskAssignment
         fields = "__all__"
-        read_only_fields = ['taskAssignmentId']
+        
 
 class TaskSerializer(serializers.ModelSerializer):
    
@@ -65,3 +66,8 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             'taskUpdateProgress',
             'taskUpdateDate',
         ]
+
+class AssignTaskSerializer(serializers.Serializer):
+    taskId = serializers.IntegerField()
+    assignerUserId = serializers.IntegerField()
+    assigneeUserId = serializers.IntegerField()

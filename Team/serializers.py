@@ -20,6 +20,12 @@ class TeamDetailsSerializer(serializers.ModelSerializer):
         fields = '__all__'
         # depth = 1  # This is used to serialize ForeignKey relationships (e.g., TeamDetailsTeamId)
 
+class TeamDetailsReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamDetails
+        fields = '__all__'
+        depth = 2
+    
 class TeamProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamProject

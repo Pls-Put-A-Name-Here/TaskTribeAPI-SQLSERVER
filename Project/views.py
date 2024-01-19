@@ -1,7 +1,10 @@
+from unittest import result
+from urllib import response
 from django.db import connection
-from rest_framework import viewsets
-from .models import Project, ProjectDetails, ProjectTeam, ProjectDetail
-from .serializers import ProjectSerializer, ProjectDetailsSerializer, ProjectTeamSerializer, ProjectDetailSerializer
+from django.db.models import Q
+from rest_framework import status, viewsets
+from .models import Project, ProjectDetails, ProjectTeam, ProjectDetail, ProjectTeamRead
+from .serializers import ProjectSerializer, ProjectDetailsSerializer, ProjectTeamReadSerializer, ProjectTeamSerializer, ProjectDetailSerializer
 from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -55,7 +58,22 @@ class ProjectDetailsViewSet(viewsets.ModelViewSet):
 class ProjectTeamViewSet(viewsets.ModelViewSet):
     queryset = ProjectTeam.objects.all()
     serializer_class = ProjectTeamSerializer
+    
+    # def create(self, request, *args, **kwargs):
+    #     serializer = ProjectTeamReadSerializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    # def perform_create(self, serializer):
+    #     serializer.save()
+    @extend_schema(responses=ProjectTeamReadSerializer(many=True))
+    def list(self, request, *args, **kwargs):
+        queryset = ProjectTeamRead.objects.raw("EXEC GetProjectTeams")
+        serializer = ProjectTeamReadSerializer(queryset, many=True)
+        return Response(serializer.data)
+        
 class ProjectDetailViewSet(viewsets.ModelViewSet):
     queryset = ProjectDetail.objects.all()
     serializer_class = ProjectDetailSerializer
