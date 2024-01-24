@@ -10,6 +10,8 @@ from Team.models import Team
 class TaskAssignment(models.Model):
     taskAssignmentId = models.AutoField(primary_key=True)
     taskId = models.IntegerField()
+    taskStatusId = models.IntegerField()
+    taskPriorityId = models.IntegerField()
     taskName = models.CharField(max_length=255)
     taskDescription = models.CharField(max_length=255)
     taskStartDate = models.DateField()

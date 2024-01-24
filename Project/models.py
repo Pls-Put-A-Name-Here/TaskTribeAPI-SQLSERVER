@@ -7,6 +7,7 @@ class Project(models.Model):
     projectName = models.CharField(max_length=100, null=True, db_column="prjName")
     projectTeamId = models.ForeignKey("Team.Team", on_delete=models.SET_NULL, null=True, db_column="prjTmIdfk")
     projectProjectManagerId = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, db_column="prjProjectManagerUsrIdfk")
+    projectDescription = models.CharField(null=True,db_column="prjDescription",max_length=255)
     projectStartDate = models.DateField(null=True, db_column="prjStartDate")
     projectEndDate = models.DateField(null=True, db_column="prjEndDate")
     projectCreatedDate = models.DateField(null=False, auto_now_add=True, db_column="prjCreatedDate")

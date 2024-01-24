@@ -1,3 +1,4 @@
+
 """Serializers for the user API view"""
 
 from django.contrib.auth import get_user_model, authenticate
@@ -5,7 +6,7 @@ from django.utils.translation import gettext as _
 
 import django_filters
 from rest_framework import serializers
-from Core.User.models import User
+from Core.User.models import User,UserRead
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the user object"""
@@ -51,6 +52,11 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         # Combine first name, other name, and capitalized last name into a full name
         lastName = obj.lastName.capitalize() if obj.lastName else ''
         return f"{lastName}, {obj.firstName} {obj.otherName} ".strip()
+    
+class UserReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRead
+        fields = '__all__'
 
 class UserFilter(django_filters.FilterSet):
     class Meta:

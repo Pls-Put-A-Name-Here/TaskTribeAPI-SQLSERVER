@@ -63,7 +63,19 @@ class Gender(models.Model):
     class Meta:
         managed = False
         db_table = 'tblGenders'
-        
+
+
+class UserRead(models.Model):
+    userId = models.IntegerField(primary_key=True)
+    userName = models.CharField(max_length=255)
+    userOtherName = models.CharField(max_length=255, null=True, blank=True)
+    userLastName = models.CharField(max_length=255)
+    userEmail = models.EmailField()
+    userDateOfBirth = models.DateField()
+    userIsActive = models.BooleanField()
+    userTitle = models.CharField(max_length=50, null=True, blank=True)
+    userGender = models.CharField(max_length=50, null=True, blank=True)
+       
 class Title(models.Model):
     titleId = models.AutoField(db_column='tltIdpk', primary_key=True)  # Field name made lowercase.
     titleName = models.CharField(db_column='tltName', unique=True, max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.

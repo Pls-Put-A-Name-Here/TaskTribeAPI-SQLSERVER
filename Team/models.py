@@ -53,4 +53,39 @@ class TeamProject(models.Model):
     class Meta:
         managed = False
         db_table = 'tblTeamProjects'
-        
+
+class TeamRole(models.Model):
+    teamRoleId = models.AutoField(primary_key=True, db_column='tmrIdpk')
+    teamRoleName = models.CharField(max_length=100, db_column='tmrName')
+    teamRoleShortName = models.CharField(max_length=100, db_column='tmrShtName')
+    teamRoleDescription = models.CharField(max_length=255, db_column='tmrDescription')
+    teamRoleCreatedDate = models.DateField(default=models.functions.Now(), db_column='tmrCreatedDate')
+    teamRoleLastUpdateDate = models.DateTimeField(auto_now=True, db_column='tmrUpdatedDate')
+
+    class Meta:
+        managed = False
+        db_table = 'tblTeamRoles'
+
+class TeamMembership(models.Model):
+    teamMembershipId = models.AutoField(primary_key=True, db_column='tmbIdpk')
+    teamMembershipUserId = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, db_column='tmbUsrIdfk')
+    teamMembershipTeamId = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True, db_column='tmbTmIdfk')
+    teamMembershipTeamRoleId = models.ForeignKey(TeamRole, on_delete=models.CASCADE, null=True, blank=True, db_column='tmbTmrIdfk')
+    teamMembershipCreatedDate = models.DateField(auto_now_add=True,null=True,db_column="tmbCreatedDate")
+    teamMembershipLastUpdateDate = models.BinaryField(null=True,db_column="tmbUpdatedDate")
+
+    class Meta:
+        managed = False
+        db_table = 'tblTeamMemberships'
+
+class TeamMembershipRole(models.Model):
+    teamMembershipRoleId = models.AutoField(primary_key=True, db_column='tmbRIdpk')
+    teamMembershipRoleTeamMembershipId= models.ForeignKey(TeamMembership,on_delete=models.CASCADE, db_column='tmbRTmbIdfk')
+    teamMembershipRoleDescription = models.CharField(max_length=255, db_column='tmbRDescription')
+    teamMembershipRoleCreatedDate = models.DateField(auto_now_add=True, db_column='tmbRCreatedDate')
+    teamMembershipRoleLastUpdateDate = models.BinaryField(db_column='tmbRUpdatedDate')
+
+    class Meta:
+        managed = False
+        db_table = 'tblTeamMembershipRoles'
+# ToDo: establish crud, apiviews for teamMembership and roles as well as stored procedures
