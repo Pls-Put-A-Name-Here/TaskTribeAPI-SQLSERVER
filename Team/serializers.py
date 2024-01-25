@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Team, TeamDetails, TeamProject,TeamMembership,TeamMembershipRole,TeamRole
+from .models import Team, TeamDetails, TeamProject,TeamMembership,TeamMembershipRole,TeamRole,TeamCreateRole
 
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,16 +37,22 @@ class TeamMembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMembership
         fields = '__all__'
+        depth = 3
         read_only_fields = ["teamMembershipLastUpdateDate"]
 
 class TeamRoleSerializer(serializers.ModelSerializer):
     class Meta:
-        models = TeamRole
+        model = TeamRole
         fields = '__all__'
         read_only_fields = ["teamRoleLastUpdateDate"]
 
+class TeamCreateRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamCreateRole
+        fields = ['teamRoleName','teamRoleShortName','teamRoleDescription','teamRoleCreatedDate']
+
 class TeamMembershipRoleSerializer(serializers.ModelSerializer):
     class Meta:
-        models = TeamMembershipRole
-        fields = '__all_'
+        model = TeamMembershipRole
+        fields = '__all__'
         read_only_fields = ["teamMembershipRoleLastUpdateDate"]
