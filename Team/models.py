@@ -33,15 +33,6 @@ class TeamDetails(models.Model):
         managed = False
         db_table = 'tblTeamDetails'
 
-# class TeamMembership(models.Model):
-#     tmbIdpk = models.AutoField(primary_key=True)
-#     tmbUsrIdfk = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-#     tmbTmIdfk = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
-#     tmbRoleIdfk = models.ForeignKey(UserRole, on_delete=models.SET_NULL, null=True)
-
-#     class Meta:
-#         db_table = 'tblTeamMembership'
-
 
 class TeamProject(models.Model):
     teamProjectId = models.AutoField(primary_key=True,db_column="tmPrjIdpk")
