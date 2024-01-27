@@ -92,7 +92,7 @@ class TeamMembership(models.Model):
 class TeamMembershipRole(models.Model):
     teamMembershipRoleId = models.AutoField(primary_key=True, db_column='tmbRIdpk')
     teamMembershipRoleTeamMembershipId= models.ForeignKey(TeamMembership,on_delete=models.CASCADE, db_column='tmbRTmbIdfk')
-    teamMembershipRoleTeamRoleId = models.ForeignKey(TeamRole,db_column='tmbRTmrIdfk')
+    teamMembershipRoleTeamRoleId = models.ForeignKey(TeamRole,db_column='tmbRTmrIdfk',on_delete=models.CASCADE)
     teamMembershipRoleDescription = models.CharField(max_length=255, db_column='tmbRDescription')
     teamMembershipRoleCreatedDate = models.DateField(auto_now_add=True, db_column='tmbRCreatedDate')
     # teamMembershipRoleLastUpdateDate = models.BinaryField(db_column='tmbRUpdatedDate')
@@ -100,4 +100,5 @@ class TeamMembershipRole(models.Model):
     class Meta:
         managed = False
         db_table = 'tblTeamMembershipRoles'
-# ToDo: establish crud, apiviews for teamMembership and roles as well as stored procedures
+        
+# ToDo:  apiviews for teamMembership and roles as well as stored procedures
