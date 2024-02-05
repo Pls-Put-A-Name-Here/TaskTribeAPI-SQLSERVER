@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Kirk\Documents\Task-Management-System\Backend\TEST\TaskTribeAPI\TaskTribeEnv"
+VIRTUAL_ENV="C:\Users\Kirk\Desktop\Task-Management-System\Backend\TEST\TaskTribeAPI\TaskTribeEnv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

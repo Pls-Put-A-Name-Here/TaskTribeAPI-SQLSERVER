@@ -50,10 +50,12 @@ INSTALLED_APPS = [
     'Core'
 ]
 
+
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    # 'apitoolkit_django.APIToolkit',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'TaskTribeAPI.urls'
@@ -92,10 +95,10 @@ WSGI_APPLICATION = 'TaskTribeAPI.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
-        "NAME": "dbTaskTribe",
-        "USER": "",
-        "PASSWORD": "",
-        "HOST": "KIRKPC\SALEMSERVER",
+        "NAME": "dbTaskTribeMain",
+        "USER": "salem",
+        "PASSWORD": "TonePave66$",
+        "HOST": "africoda-server-2.database.windows.net",
         "PORT": "",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
     },
@@ -147,3 +150,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
      "http://localhost:8088",
      ]
+
+APITOOLKIT_KEY = "x6IdeZZNPSkzztNOgaZsHj8c9GGWRoOev7650bpbom0B/Y/D"
+
+APITOOLKIT_REDACT_HEADERS = ["Authorization", "Cookie","Content-Length", "Content-Type"] # optional
+APITOOLKIT_REDACT_REQ_BODY = ["$.password", "$.credit_card"] # optional
+APITOOLKIT_REDACT_RES_BODY = ["$.credentials", "$.social_security_number"] # optional
