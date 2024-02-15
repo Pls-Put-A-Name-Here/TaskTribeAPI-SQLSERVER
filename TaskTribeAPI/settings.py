@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'Project',
     'Core.User',
     'Core.Auth',
-    'Core'
+    'Core',
+     'channels',
+     'ChatRoom',
 ]
 
 
@@ -88,6 +90,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TaskTribeAPI.wsgi.application'
+ASGI_APPLICATION = 'TaskTribeAPI.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -95,10 +98,13 @@ WSGI_APPLICATION = 'TaskTribeAPI.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
-        "NAME": "dbTaskTribeMain",
-        "USER": "salem",
-        "PASSWORD": "TonePave66$",
-        "HOST": "africoda-server-2.database.windows.net",
+        "NAME": "dbTaskTribe",
+        # "USER": "salem",
+        "USER":"",
+        # "PASSWORD": "TonePave66$",
+        "PASSWORD":"",
+        # "HOST": "africoda-server-2.database.windows.net",
+        "HOST":"KIRKPC\SALEMSERVER",
         "PORT": "",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
     },

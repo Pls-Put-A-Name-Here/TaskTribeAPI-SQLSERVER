@@ -159,7 +159,42 @@ class TaskAssignmentsAPIView(APIView):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
         
+    def delete(self, request, pk=None):
+        try:
+            if pk is None:
+                return Response({"detail": "not found"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            with connection.cursor() as cursor:
+                # Call the stored procedure to delete the task assignment
+                cursor.execute("EXEC DeleteTaskAssignment @TaskAssignmentId=%s", [pk])
+
+                # Check the execution status of the stored procedure
+                if cursor.rowcount == 0:
+                    return Response({"detail": "not found"}, status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response({"detail": "deleted"})
         
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    def put(self, request, pk=None):
+        try:
+            if pk is None:
+                return Response({"detail": "not found"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Extract parameters from the request or any other source
+            task_id = request.data.get('taskId')
+            assignee_user_id = request.data.get('assigneeUserId')
+            assigner_user_id = request.data.get('assignerUserId')
+
+            # Call the stored procedure using a raw SQL query
+            with connection.cursor() as cursor:
+                cursor.execute("EXEC [dbo].[UpdateTaskAssignment] @TaskAssignmentID=%s, @TaskID=%s, @AssigneeUserID=%s, @AssignerUserID=%s",
+                               [pk, task_id, assignee_user_id, assigner_user_id])
+
+            return JsonResponse({"message": "Task updated successfully","Task Assignment":{"taskId":task_id,"AssigneeId":assignee_user_id,"AssignerId":assigner_user_id}})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)    
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
 
