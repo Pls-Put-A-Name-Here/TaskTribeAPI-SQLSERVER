@@ -55,8 +55,9 @@ class ProjectDetailsViewSet(viewsets.ModelViewSet):
     queryset = ProjectDetails.objects.all()
     serializer_class = ProjectDetailsSerializer
 
+# ToDo: work around Project Team issue of using stored procedure
 class ProjectTeamViewSet(viewsets.ModelViewSet):
-    queryset = ProjectTeam.objects.all()
+    queryset = ProjectTeamRead.objects.all()
     serializer_class = ProjectTeamSerializer
     
     # def create(self, request, *args, **kwargs):
