@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from Task.views import TaskUpdateView, TaskAssignmentsAPIView,TaskViewSet,SubtaskViewSet,PriorityViewSet,StatusViewSet,AssignTaskView,TaskUpdateViewSet
+from Task.views import TaskUpdateView, TaskAssignmentsAPIView,TaskViewSet,SubtaskViewSet,PriorityViewSet,StatusViewSet,AssignTaskView,TaskUpdateViewSet,TaskStatusUpdateView
 
 router = DefaultRouter()
 router.register(r'tasks', TaskViewSet)
@@ -21,4 +21,5 @@ urlpatterns = [
     # path('task-assignments/',AssignTaskView.as_view(),name='task-assign'),
     path('task-updates/', TaskUpdateView.as_view(), name='task-update'),
     path('task-updates/<int:pk>/', TaskUpdateView.as_view(), name='task-update'),
+    path('task/status/update',TaskStatusUpdateView.as_view(),name='task-status-update')
 ]
