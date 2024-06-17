@@ -3,7 +3,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import  generics, authentication,permissions,viewsets
 
-from Core.User.serializers import UserSerializer,UserDetailsSerializer,UserReadSerializer, UserSerializerAll
+from Core.User.serializers import ProfileImageSerializer, UserSerializer,UserDetailsSerializer,UserReadSerializer, UserSerializerAll
 from Core.User.models import User,UserRead
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view,authentication_classes,permission_classes
@@ -61,6 +61,7 @@ class GetUsersAPIView(APIView):
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
+@extend_schema(responses=UserDetailsSerializer,request=ProfileImageSerializer)
 def ProfileImageView(request):
     if 'description' not in request.data or 'image' not in request.FILES:
         return Response({"error": "Description and image are required fields"}, status=status.HTTP_400_BAD_REQUEST)

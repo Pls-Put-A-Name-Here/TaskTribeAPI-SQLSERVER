@@ -245,3 +245,23 @@ class StatusViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         return StatusSerializer
+
+
+class TaskAssignmentsByAssigneeAPIView(APIView):
+    @extend_schema(responses=TaskAssignmentSerializer(many=True))
+    
+    
+    def get(self, request, id=None):
+        try:
+            if request.user.id:
+                task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignmentsByAssigneeUserId @userId=%s", [request.user.id])
+            else:
+                task_assignments = TaskAssignment.objects.raw("EXEC GetTaskAssignments")
+
+            if not task_assignments:
+                return Response({"detail": "not found"})
+
+            serializer = TaskAssignmentSerializer(task_assignments, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

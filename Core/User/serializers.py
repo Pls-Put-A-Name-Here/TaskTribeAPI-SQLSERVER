@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['id','email','password','userName','firstName','lastName']
+        fields = ['id','email','password','userName','firstName','lastName','profileImage']
         extra_kwargs = {'password':{'write_only':True,'min_length':5}}
 
     def create(self, validated_data):
@@ -64,3 +64,7 @@ class UserFilter(django_filters.FilterSet):
         fields = {
             'isActive': ['exact'],
         }
+
+class ProfileImageSerializer(serializers.Serializer):
+    description = serializers.CharField
+    image = serializers.FileField
