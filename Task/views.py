@@ -8,12 +8,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import TaskAssignment, Task, SubTask, Priority, Status, TaskUpdate
 from .serializers import AssignTaskSerializer, TaskAssignmentSerializer, TaskSerializer, SubTaskSerializer, \
-    PrioritySerializer, StatusSerializer, PriorityUpdateSerializer, PriorityCreateSerializer, TaskUpdateSerializer
+    PrioritySerializer, StatusSerializer, PriorityUpdateSerializer, PriorityCreateSerializer, TaskUpdateSerializer,TaskStatusUpdateSerializer
 
 from rest_framework import status
 from .dto import AssignTaskDTO
 
+
 class TaskStatusUpdateView(APIView):
+    @extend_schema(request=TaskStatusUpdateSerializer,responses=TaskStatusUpdateSerializer)
     def post(self, request):
         task_id = request.data.get('taskId')
         task_status_id = request.data.get('taskStatusId')

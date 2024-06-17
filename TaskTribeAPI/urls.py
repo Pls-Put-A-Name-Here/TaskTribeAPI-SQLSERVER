@@ -35,5 +35,6 @@ urlpatterns = [
     path('api/v1/',include(taskUrls)),
     path('api/v1/',include(teamUrls)),
     path('api/v1/',include(projectUrls)),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/v1/',include('notifications.urls'))
 ]

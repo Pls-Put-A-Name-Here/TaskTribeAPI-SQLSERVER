@@ -1,14 +1,19 @@
 """Views for the user api"""
 
+from django.shortcuts import get_object_or_404
 from rest_framework import  generics, authentication,permissions,viewsets
 
-from Core.User.serializers import UserSerializer,UserDetailsSerializer,UserReadSerializer
+from Core.User.serializers import UserSerializer,UserDetailsSerializer,UserReadSerializer, UserSerializerAll
 from Core.User.models import User,UserRead
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view,authentication_classes,permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from django.db import connection
 from drf_spectacular.utils import extend_schema
+from utils import store_image
 
 class CreateUserView(generics.CreateAPIView):   
     """Create a new user in the system"""
@@ -51,3 +56,25 @@ class GetUsersAPIView(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def ProfileImageView(request):
+    if 'description' not in request.data or 'image' not in request.FILES:
+        return Response({"error": "Description and image are required fields"}, status=status.HTTP_400_BAD_REQUEST)
+
+    description = request.data['description']
+    user = request.user  # Use the authenticated user
+    image = request.FILES['image']
+
+    # Assume store_image is a utility function to handle image saving
+    image_url = store_image(image)  # You need to implement this function to save the image and return its URL
+
+    user.profileImage = image_url
+    user.save()
+
+    serializer = UserDetailsSerializer(user)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)

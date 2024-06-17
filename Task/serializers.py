@@ -68,3 +68,7 @@ class AssignTaskSerializer(serializers.Serializer):
     taskId = serializers.IntegerField()
     assignerUserId = serializers.IntegerField()
     assigneeUserId = serializers.IntegerField()
+
+class TaskStatusUpdateSerializer(serializers.Serializer):
+    taskId = serializers.IntegerField
+    taskStatusId = serializers.IntegerField

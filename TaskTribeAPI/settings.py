@@ -43,13 +43,14 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
     'Team',
+    'notifications.apps.NotificationsConfig',
     'Task',
     'Project',
     'Core.User',
     'Core.Auth',
     'Core',
-     'channels',
-     'ChatRoom',
+    'channels',
+    'ChatRoom',
 ]
 
 
@@ -144,7 +145,14 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 100,  # Set your desired page size
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'] #Opt to use django filters,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'], #Opt to use django filters,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
 }
 
 SPECTACULAR_SETTINGS = {

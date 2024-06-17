@@ -42,6 +42,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     isActive = models.BooleanField(default=True,db_column='usrActive')
     createdDate = models.DateTimeField(auto_now_add=True,db_column='usrCreatedDate')
     lastEditDate = models.DateTimeField(auto_now=True,db_column='usrUpdateDate')
+    profileImage = models.URLField(max_length=255,null=True,db_column='usrProfileImage')
 
     objects = UserMangager()
 
