@@ -14,8 +14,9 @@ from rest_framework import status
 from .dto import AssignTaskDTO
 
 
+
 class TaskStatusUpdateView(APIView):
-    @extend_schema(request=TaskStatusUpdateSerializer,responses=TaskStatusUpdateSerializer)
+    @extend_schema(request=TaskStatusUpdateSerializer, responses=TaskStatusUpdateSerializer)
     def post(self, request):
         task_id = request.data.get('taskId')
         task_status_id = request.data.get('taskStatusId')
@@ -29,20 +30,24 @@ class TaskStatusUpdateView(APIView):
                     "EXEC [dbo].[UpdateTaskAssignmentStatus] @TaskID=%s, @TaskStatusID=%s",
                     [task_id, task_status_id]
                 )
-                results = cursor.fetchone()
-                res_stat, = results
+                result = cursor.fetchone()
+
+                if not result:
+                    return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
                 
+                res_stat, = result
                 if res_stat == 1:
-                    return Response({"message":"task status updated successfully"}, status=status.HTTP_200_OK)
+                    return Response({"message": "Task status updated successfully"}, status=status.HTTP_200_OK)
                 else:
-                    return Response({"message":"task not found"}, status=status.HTTP_404_NOT_FOUND)
+                    return Response({"message": "Task status update failed"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+
 class TaskUpdateView(APIView):
     @extend_schema(responses=TaskUpdateSerializer(many=True))
     def get(self, request, pk=None):
-
         try:
             with connection.cursor() as cursor:
                 cursor.execute(
